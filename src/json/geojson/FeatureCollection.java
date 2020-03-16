@@ -15,6 +15,8 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 import json.algorithm.Jenks;
 import json.converter.csv.CSVReader;
@@ -265,8 +267,8 @@ public class FeatureCollection extends Shape {
 	}
 
 	@Override
-	public boolean partlyIn(Bounding iBnd) {
-		for (Shape aShape:_shapes.values()){
+	public boolean partlyIn(Envelope iBnd) {
+		for (Geometry aShape:_shapes.values()){
 			if (aShape.partlyIn(iBnd)) return true;
 		}
 		return false;
@@ -281,7 +283,7 @@ public class FeatureCollection extends Shape {
 	@Override
 	public List<Entity> extract() {
 		Vector<Entity> aEntities = new Vector<Entity>();
-		for (Shape aShape:_shapes.values()) {
+		for (Geometry aShape:_shapes.values()) {
 			aEntities.addAll(aShape.extract());
 		}
 		return aEntities;
@@ -290,7 +292,7 @@ public class FeatureCollection extends Shape {
 	public Bounding getMergedBound(){
 		
 		if (_shapes.size()>0) {
-			Bounding aSt = _shapes.firstEntry().getValue().getBounding().clone();
+			Envelope aSt = _shapes.firstEntry().getValue().getBounding().clone();
 			for (Shape aShape:_shapes.values()) {
 				aSt.merge(aShape.getBounding());
 			}
@@ -303,7 +305,7 @@ public class FeatureCollection extends Shape {
 	@Override
 	public int[] arcs() {
 		int[] aAll= {};
-		for (Shape aShape:_shapes.values()) {
+		for (Geometry aShape:_shapes.values()) {
 			int[] aArcs = aShape.arcs();
 			aAll = ArrayUtils.addAll(aAll, aArcs);
 		}
@@ -313,7 +315,7 @@ public class FeatureCollection extends Shape {
 	@Override
 	public Object toTopology() {
 		GeometryCollection aGeoCol = new GeometryCollection();
-		for (Shape aShape:_shapes.values()) {
+		for (Geometry aShape:_shapes.values()) {
 			aGeoCol.addGeometry(aShape.toTopology());
 		}
 		return aGeoCol;

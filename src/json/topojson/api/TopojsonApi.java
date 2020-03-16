@@ -60,7 +60,7 @@ public class TopojsonApi {
 	
 		Topology aTopology = new Topology();
 		
-		aTopology.addObject(iTopoName , aFeat.toTopology());
+		aTopology.addGeometry(iTopoName , aFeat.toTopology());
 		
 		aTopology.setArcs(aMap);
 	
@@ -141,7 +141,7 @@ public class TopojsonApi {
 		// The collection is ready , and also the new map
 		Topology aTopology = new Topology();
 		
-		aTopology.addObject(iTopoName , aCollection.toTopology());
+		aTopology.addGeometry(iTopoName , aCollection.toTopology());
 		
 		aTopology.setArcs(aNewMap);
 		

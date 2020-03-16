@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+
 import json.geojson.objects.Bounding;
 import json.geojson.objects.Object;
 import json.geojson.objects.Shape;
@@ -17,18 +20,18 @@ import json.topojson.geom.sub.Entity;
 
 
 
-public class Feature extends Shape {
+public class Feature {
 
 	int _recordId;
-	Shape _shape;
+	Geometry _shape;
 	HashMap<String,java.lang.Object> _properties;
 	
-	public Feature(int iRecordId, Shape iShape){
+	public Feature(int iRecordId, Geometry iShape){
 		
 		_recordId = iRecordId;
 		_shape = iShape;
 		_properties = new HashMap<String,java.lang.Object>();
-		_properties.put("bound", _shape.getBounding());
+		_properties.put("bound", _shape.getEnvelope());
 		
 	}
 	
@@ -74,7 +77,7 @@ public class Feature extends Shape {
 		aBuffer.append(_shape.toJson());
 		aBuffer.append(", \"properties\" : {");
 		aBuffer.append(" \"bound\" :");
-		aBuffer.append(_shape.getBounding().toJson());
+		aBuffer.append(_shape.getEnvelope().toJson());
 		
 		if (!_properties.isEmpty()) {
 			
@@ -106,10 +109,10 @@ public class Feature extends Shape {
 		return _shape.partlyIn(iBnd);
 	}
 
-	@Override
-	public Bounding getBounding() {
+	
+	public Geometry getBounding() {
 		// TODO Auto-generated method stub
-		return _shape.getBounding();
+		return _shape.getEnvelope();
 	}
 
 	@Override

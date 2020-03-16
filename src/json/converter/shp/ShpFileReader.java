@@ -13,6 +13,8 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import org.locationtech.jts.geom.Geometry;
+
 import json.converter.csv.CSVReader;
 import json.converter.csv.merger.Merger;
 import json.converter.dbf.DBFExtractor;
@@ -287,7 +289,7 @@ public class ShpFileReader {
 				int aShapeType = Toolbox.little2big(aIBuffer);
 				//System.out.println("Record Shape Type : "+giveShapeName(aShapeType));
 	
-				Shape aReadShape = null;
+				Geometry aReadShape = null;
 				switch (aShapeType) {
 					case 5 : { //Polygons
 						aReadShape = Polygon.readPolygon(_stream);

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.locationtech.jts.geom.Geometry;
+
 import json.algorithm.DouglasPeucker;
 import json.geojson.objects.Bounding;
 import json.geojson.objects.Point;
@@ -16,7 +18,7 @@ public class Topology {
 
 	String type;
 	Transform transform;
-	public HashMap<String,Object> objects;
+	public HashMap<String,Geometry> objects;
 	public java.lang.Object[][][] arcs;
 	transient boolean _quantized;
 	
@@ -34,8 +36,8 @@ public class Topology {
 		_notsaved = true;
 	}
 	
-	public void addObject(String iName, Object iObject){
-		if (objects==null) objects = new HashMap<String,Object>();
+	public void addGeometry(String iName, Geometry iObject){
+		if (objects==null) objects = new HashMap<String,Geometry>();
 		objects.put(iName, iObject);
 	}
 	
@@ -75,7 +77,7 @@ public class Topology {
 	
 	public void fill(double tx, double ty, Display iDisplay, Colorifier iColorifier){
 		
-		 for (Object aObj:objects.values()){
+		 for (Geometry aObj:objects.values()){
 			 aObj.fill(this, iDisplay, iColorifier);
 		 }
 		
@@ -87,7 +89,7 @@ public class Topology {
 		int max = -1;
 		if (objects!=null) {
 			
-			for (Object aObject:objects.values()){
+			for (Geometry aObject:objects.values()){
 				int index = aObject.findMaxArcIndex();
 				if (index>max) max=index;
 			}
